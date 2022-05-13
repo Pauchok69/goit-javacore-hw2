@@ -15,7 +15,7 @@ import goit.javacore.hw2.dto.ProductDTO;
 
 public class ProductsRepository {
     private static final String PRODUCTS_FILE_PATH = "./src/main/java/goit/javacore/hw2/storage/products.json";
-    private Map<String, ProductDTO> products;
+    private Map<Character, ProductDTO> products;
 
     public ProductsRepository() {
         getProductsFromFile();
@@ -30,13 +30,13 @@ public class ProductsRepository {
             FileReader reader = new FileReader(PRODUCTS_FILE_PATH);
             List<ProductDTO> productsList = gson.fromJson(new JsonReader(reader), type);
 
-            products = productsList.stream().collect(Collectors.toMap(ProductDTO::getName, item -> item));
+            products = productsList.stream().collect(Collectors.toMap(ProductDTO::getCode, item -> item));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(String.format("File '%s' not found or broken", PRODUCTS_FILE_PATH));
         }
     }
 
-    public ProductDTO findOneByName(String name) {
-        return products.get(name);
+    public ProductDTO findOneByCode(Character code) {
+        return products.get(code);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ProductDTO {
-    String name;
+    Character code;
     Double price;
     Integer saleCount;
     Double salePrice;

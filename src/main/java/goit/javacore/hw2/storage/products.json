@@ -1,24 +1,24 @@
 [
   {
-    "name": "A",
+    "code": "A",
     "price": 1.25,
     "saleCount": 3,
     "salePrice": 3.00
   },
   {
-    "name": "B",
+    "code": "B",
     "price": 4.25,
     "saleCount": null,
     "salePrice": null
   },
   {
-    "name": "C",
+    "code": "C",
     "price": 1.00,
     "saleCount": 6,
     "salePrice": 5.00
   },
   {
-    "name": "D",
+    "code": "D",
     "price": 0.75,
     "saleCount": null,
     "salePrice": null

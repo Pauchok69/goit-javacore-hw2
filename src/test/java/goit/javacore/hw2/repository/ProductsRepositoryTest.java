@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class ProductsRepositoryTest {
     ProductsRepository productsRepository;
 
@@ -19,18 +15,18 @@ class ProductsRepositoryTest {
 
     @Test
     void testFindOneByNameIsWorksCorrectlyForExistsProduct() {
-        ProductDTO productA = productsRepository.findOneByName("A");
+        ProductDTO productA = productsRepository.findOneByCode('A');
 
         Assertions.assertInstanceOf(ProductDTO.class, productA);
         Assertions.assertEquals(
-                new ProductDTO("A", 1.25, 3, 3.0),
+                new ProductDTO('A', 1.25, 3, 3.0),
                 productA
         );
-        Assertions.assertEquals("A", productA.getName());
+        Assertions.assertEquals('A', productA.getCode());
     }
 
     @Test
     void testFindOneByNameReturnsNullForNotExistProduct() {
-        Assertions.assertNull(productsRepository.findOneByName("W"));
+        Assertions.assertNull(productsRepository.findOneByCode('W'));
     }
 }
