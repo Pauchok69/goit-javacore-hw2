@@ -3,7 +3,6 @@ package goit.javacore.hw2.repository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import goit.javacore.hw2.dto.ProductDTO;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProductsRepository {
-    public static final String PRODUCTS_FILE_PATH = "./src/main/java/goit/javacore/hw2/storage/products.json";
+import goit.javacore.hw2.dto.ProductDTO;
 
-    Map<String, ProductDTO> products;
+public class ProductsRepository {
+    private static final String PRODUCTS_FILE_PATH = "./src/main/java/goit/javacore/hw2/storage/products.json";
+    private Map<String, ProductDTO> products;
 
     public ProductsRepository() {
         getProductsFromFile();
@@ -36,7 +36,7 @@ public class ProductsRepository {
         }
     }
 
-    ProductDTO findOneByName(String name) {
+    public ProductDTO findOneByName(String name) {
         return products.get(name);
     }
 }

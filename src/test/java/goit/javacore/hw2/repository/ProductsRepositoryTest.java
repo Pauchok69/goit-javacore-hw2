@@ -18,11 +18,19 @@ class ProductsRepositoryTest {
     }
 
     @Test
-    void testFindOneByNameIsWorksCorrectly() {
-        Assertions.assertInstanceOf(ProductDTO.class, productsRepository.findOneByName("A"));
+    void testFindOneByNameIsWorksCorrectlyForExistsProduct() {
+        ProductDTO productA = productsRepository.findOneByName("A");
+
+        Assertions.assertInstanceOf(ProductDTO.class, productA);
         Assertions.assertEquals(
                 new ProductDTO("A", 1.25, 3, 3.0),
-                productsRepository.findOneByName("A")
+                productA
         );
+        Assertions.assertEquals("A", productA.getName());
+    }
+
+    @Test
+    void testFindOneByNameReturnsNullForNotExistProduct() {
+        Assertions.assertNull(productsRepository.findOneByName("W"));
     }
 }
