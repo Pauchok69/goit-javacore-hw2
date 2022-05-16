@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class CartTest {
     @Test
-    void testIfCalculationOfTotalPriceForCartIsCorrectly() {
+    void testForSingleProductInCartShouldBeCorrect() {
         Cart cartCalculator = new Cart();
 
         Assertions.assertEquals(
