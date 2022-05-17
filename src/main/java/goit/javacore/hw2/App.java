@@ -4,6 +4,10 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        CartService cartService = new CartService();
+
+        Double result = cartService.calculateTotalPrice(" ABCDABA");
+
+        System.out.println("result = " + result);
     }
 }

@@ -10,4 +10,8 @@ public class ProductDTO {
     Double price;
     Integer saleCount;
     Double salePrice;
+
+    public boolean hasSalePrice() {
+        return saleCount != null && salePrice != null;
+    }
 }
