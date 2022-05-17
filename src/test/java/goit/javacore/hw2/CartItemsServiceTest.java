@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 class CartItemsServiceTest {
+    //ProductsDefiner is internal dependency in the class. You have to mock all calls using Mockito
+    //here is simple example https://pastebin.com/1zSjHTC2
     private CartItemsService cartItemsService;
 
     @BeforeEach

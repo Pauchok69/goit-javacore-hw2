@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 class CartServiceTest {
+    //here ypu also have to mock calls to CartItemsService
+
     @Test
     void testShouldCalculateCartCorrectly() {
         CartService cartService = new CartService();

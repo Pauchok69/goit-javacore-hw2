@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ProductsDefinerTest {
+    //here you have to mock all calls to ProductsRepository
     @Test
     void testDefineProductListFromCartWithExistProducts() {
         ProductsDefiner productsDefiner = new ProductsDefiner();
