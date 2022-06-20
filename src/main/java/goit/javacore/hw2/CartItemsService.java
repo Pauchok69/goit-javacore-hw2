@@ -14,16 +14,18 @@ public class CartItemsService {
         Map<Character, CartItemDTO> cartItemsMap = new HashMap<>();
 
         for (ProductDTO productDTO : defineProductsList(cartRow)) {
-            if (!cartItemsMap.containsKey(productDTO.getCode())) {
+            Character productCode = productDTO.getCode();
+
+            if (!cartItemsMap.containsKey(productCode)) {
                 CartItemDTO cartItem = new CartItemDTO(productDTO, 1);
-                cartItemsMap.put(productDTO.getCode(), cartItem);
+                cartItemsMap.put(productCode, cartItem);
 
                 continue;
             }
 
-            CartItemDTO cartItem = cartItemsMap.get(productDTO.getCode());
+            CartItemDTO cartItem = cartItemsMap.get(productCode);
             cartItem.setQuantity(cartItem.getQuantity() + 1);
-            cartItemsMap.put(productDTO.getCode(), cartItem);
+            cartItemsMap.put(productCode, cartItem);
         }
 
         return cartItemsMap;
