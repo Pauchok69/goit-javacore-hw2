@@ -23,14 +23,15 @@ public class CartService {
             CartItemDTO cartItem = entry.getValue();
             ProductDTO product = cartItem.getProduct();
             int quantity = cartItem.getQuantity();
+            Integer saleCount = product.getSaleCount();
 
-            if (product.hasSalePrice() && product.getSaleCount() >= quantity) {
-                int remainder = quantity % product.getSaleCount();
-                int saleGroups = quantity / product.getSaleCount();
+            if (product.hasSalePrice() && saleCount <= quantity) {
+                int remainder = quantity % saleCount;
+                int saleGroups = quantity / saleCount;
 
                 result += saleGroups * product.getSalePrice() + remainder * product.getPrice();
             } else {
-                result += cartItem.getProduct().getPrice() * quantity;
+                result += product.getPrice() * quantity;
             }
         }
 
