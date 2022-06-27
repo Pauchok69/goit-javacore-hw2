@@ -192,24 +192,4 @@ class CartServiceTest {
         verify(productDTOMock, never()).getPrice();
         verify(productDTOMock, never()).getSalePrice();
     }
-
-    @Test
-    void testShouldCalculateCartCorrectly() {
-        Map<String, Double> tests = new HashMap<>();
-        tests.put("A", 1.25);
-        tests.put("AA", 2.50);
-        tests.put(" AAB", 6.75);
-        tests.put(" AABZ_33", 6.75);
-        tests.put(" AAA", 3.00);
-        tests.put(" ABCDABA", 13.25);
-        tests.put("", 0.00);
-
-        for (Map.Entry<String, Double> entry : tests.entrySet()) {
-            Assertions.assertEquals(
-                    entry.getValue(),
-                    cartService.calculateTotalPrice(entry.getKey()),
-                    entry::getKey
-            );
-        }
-    }
 }
