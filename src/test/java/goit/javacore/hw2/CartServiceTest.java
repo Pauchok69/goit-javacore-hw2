@@ -27,10 +27,6 @@ class CartServiceTest {
 
     @Mock
     private CartItemsService cartItemsServiceMock;
-    @Mock
-    private CartItemDTO cartItemDTOMock;
-    @Mock
-    ProductDTO productDTOMock;
     @InjectMocks
     private CartService cartService;
 
@@ -46,32 +42,30 @@ class CartServiceTest {
         field.set(cartService, cartItemsServiceMock);
     }
 
+    private ProductDTO getProductDTOA() {
+        return new ProductDTO('A', 1.25, 3, 3.00);
+    }
+
+    private ProductDTO getProductDTOB() {
+        return new ProductDTO('B', 4.25, null, null);
+    }
+
+    private ProductDTO getProductDTOC() {
+        return new ProductDTO('C', 1.00, 6, 5.00);
+    }
+
     @Test
     void testShouldCalculateCartCorrectlyWithSingleProduct() {
         String cart = "A";
         double expectedTotalAmount = 1.25;
 
+        CartItemDTO cartItemA = new CartItemDTO(getProductDTOA(), 1);
+
+
         when(cartItemsServiceMock.defineCartItems(cart))
-                .thenReturn(Map.of('A', cartItemDTOMock));
-
-        when(cartItemDTOMock.getProduct()).thenReturn(productDTOMock);
-        when(cartItemDTOMock.getQuantity()).thenReturn(1);
-
-        when(productDTOMock.getPrice()).thenReturn(1.25);
-        when(productDTOMock.hasSalePrice()).thenReturn(true);
-        when(productDTOMock.getSaleCount()).thenReturn(3);
+                .thenReturn(Map.of('A', cartItemA));
 
         Assertions.assertEquals(expectedTotalAmount, cartService.calculateTotalPrice(cart));
-
-        verify(cartItemsServiceMock, times(1)).defineCartItems(cart);
-
-        verify(cartItemDTOMock, times(1)).getProduct();
-        verify(cartItemDTOMock, times(1)).getQuantity();
-
-        verify(productDTOMock, times(1)).getSaleCount();
-        verify(productDTOMock, times(1)).hasSalePrice();
-        verify(productDTOMock, times(1)).getPrice();
-        verify(productDTOMock, never()).getSalePrice();
     }
 
     @Test
@@ -79,27 +73,12 @@ class CartServiceTest {
         String cart = "AAAAA";
         double expectedTotalAmount = 5.50;
 
+        CartItemDTO cartItemA = new CartItemDTO(getProductDTOA(), 5);
+
         when(cartItemsServiceMock.defineCartItems(cart))
-                .thenReturn(Map.of('A', cartItemDTOMock));
-
-        when(cartItemDTOMock.getProduct()).thenReturn(productDTOMock);
-        when(cartItemDTOMock.getQuantity()).thenReturn(5);
-
-        when(productDTOMock.getPrice()).thenReturn(1.25);
-        when(productDTOMock.hasSalePrice()).thenReturn(true);
-        when(productDTOMock.getSaleCount()).thenReturn(3);
-        when(productDTOMock.getSalePrice()).thenReturn(3.00);
+                .thenReturn(Map.of('A', cartItemA));
 
         Assertions.assertEquals(expectedTotalAmount, cartService.calculateTotalPrice(cart));
-
-        verify(cartItemsServiceMock, times(1)).defineCartItems(cart);
-
-        verify(cartItemDTOMock, times(1)).getProduct();
-        verify(cartItemDTOMock, times(1)).getQuantity();
-
-        verify(productDTOMock, times(1)).getSaleCount();
-        verify(productDTOMock, times(1)).hasSalePrice();
-        verify(productDTOMock, times(1)).getPrice();
     }
 
     @Test
@@ -107,69 +86,27 @@ class CartServiceTest {
         String cart = "BBB";
         double expectedTotalAmount = 12.75;
 
+        CartItemDTO cartItemB = new CartItemDTO(getProductDTOB(), 3);
+
+
         when(cartItemsServiceMock.defineCartItems(cart))
-                .thenReturn(Map.of('B', cartItemDTOMock));
-
-        when(cartItemDTOMock.getProduct()).thenReturn(productDTOMock);
-        when(cartItemDTOMock.getQuantity()).thenReturn(3);
-
-        when(productDTOMock.getPrice()).thenReturn(4.25);
-        when(productDTOMock.hasSalePrice()).thenReturn(false);
-        when(productDTOMock.getSaleCount()).thenReturn(null);
+                .thenReturn(Map.of('B', cartItemB));
 
         Assertions.assertEquals(expectedTotalAmount, cartService.calculateTotalPrice(cart));
-
-        verify(cartItemsServiceMock, times(1)).defineCartItems(cart);
-
-        verify(cartItemDTOMock, times(1)).getProduct();
-        verify(cartItemDTOMock, times(1)).getQuantity();
-
-        verify(productDTOMock, times(1)).getSaleCount();
-        verify(productDTOMock, times(1)).hasSalePrice();
-        verify(productDTOMock, times(1)).getPrice();
-        verify(productDTOMock, never()).getSalePrice();
     }
 
     @Test
     void testShouldCalculateCartCorrectlyWithDifferentProductWithMoreThanOneQuantity() {
         String cart = "AABBBCCCCCCCC";
         double expectedTotalAmount = 22.25;
-        CartItemDTO cartItemDTOMockA = mock(CartItemDTO.class);
-        CartItemDTO cartItemDTOMockB = mock(CartItemDTO.class);
-        CartItemDTO cartItemDTOMockC = mock(CartItemDTO.class);
-
-        ProductDTO productDTOMockA = mock(ProductDTO.class);
-        ProductDTO productDTOMockB = mock(ProductDTO.class);
-        ProductDTO productDTOMockC = mock(ProductDTO.class);
+        CartItemDTO cartItemA = new CartItemDTO(getProductDTOA(), 2);
+        CartItemDTO cartItemB = new CartItemDTO(getProductDTOB(), 3);
+        CartItemDTO cartItemC = new CartItemDTO(getProductDTOC(), 8);
 
         when(cartItemsServiceMock.defineCartItems(cart))
-                .thenReturn(Map.of('A', cartItemDTOMockA, 'B', cartItemDTOMockB, 'C', cartItemDTOMockC));
-
-        when(cartItemDTOMockA.getProduct()).thenReturn(productDTOMockA);
-        when(cartItemDTOMockB.getProduct()).thenReturn(productDTOMockB);
-        when(cartItemDTOMockC.getProduct()).thenReturn(productDTOMockC);
-
-        when(cartItemDTOMockA.getQuantity()).thenReturn(2);
-        when(cartItemDTOMockB.getQuantity()).thenReturn(3);
-        when(cartItemDTOMockC.getQuantity()).thenReturn(8);
-
-        when(productDTOMockA.getPrice()).thenReturn(1.25);
-        when(productDTOMockB.getPrice()).thenReturn(4.25);
-        when(productDTOMockC.getPrice()).thenReturn(1.00);
-
-        when(productDTOMockA.hasSalePrice()).thenReturn(true);
-        when(productDTOMockB.hasSalePrice()).thenReturn(false);
-        when(productDTOMockC.hasSalePrice()).thenReturn(true);
-
-        when(productDTOMockA.getSaleCount()).thenReturn(3);
-        when(productDTOMockB.getSaleCount()).thenReturn(null);
-        when(productDTOMockC.getSaleCount()).thenReturn(6);
-
-        when(productDTOMockC.getSalePrice()).thenReturn(5.00);
+                .thenReturn(Map.of('A', cartItemA, 'B', cartItemB, 'C', cartItemC));
 
         Assertions.assertEquals(expectedTotalAmount, cartService.calculateTotalPrice(cart));
-
-        verify(productDTOMockC, times(1)).getSalePrice();
     }
 
     @Test
@@ -183,13 +120,5 @@ class CartServiceTest {
         Assertions.assertEquals(expectedTotalAmount, cartService.calculateTotalPrice(cart));
 
         verify(cartItemsServiceMock, times(1)).defineCartItems(cart);
-
-        verify(cartItemDTOMock, never()).getProduct();
-        verify(cartItemDTOMock, never()).getQuantity();
-
-        verify(productDTOMock, never()).getSaleCount();
-        verify(productDTOMock, never()).hasSalePrice();
-        verify(productDTOMock, never()).getPrice();
-        verify(productDTOMock, never()).getSalePrice();
     }
 }

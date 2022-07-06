@@ -21,8 +21,6 @@ class ProductsDefinerTest {
     //here you have to mock all calls to ProductsRepository - Done
     @Mock
     private ProductsRepository productsRepositoryMock;
-    @Mock
-    private ProductDTO productDTOMock;
     @InjectMocks
     private ProductsDefiner productsDefiner;
 
@@ -40,12 +38,28 @@ class ProductsDefinerTest {
         when(productsRepositoryMock.findOneByCode(anyChar())).thenReturn(null);
     }
 
+    private ProductDTO getProductDTOA() {
+        return new ProductDTO('A', 1.25, 3, 3.00);
+    }
+
+    private ProductDTO getProductDTOB() {
+        return new ProductDTO('B', 4.25, null, null);
+    }
+
+    private ProductDTO getProductDTOC() {
+        return new ProductDTO('C', 1.00, 6, 5.00);
+    }
+
+    private ProductDTO getProductDTOD() {
+        return new ProductDTO('D', 0.75, null, null);
+    }
+
     @Test
     void testDefineProductListFromCartWithExistProducts() {
-        when(productsRepositoryMock.findOneByCode('A')).thenReturn(productDTOMock);
-        when(productsRepositoryMock.findOneByCode('B')).thenReturn(productDTOMock);
-        when(productsRepositoryMock.findOneByCode('C')).thenReturn(productDTOMock);
-        when(productsRepositoryMock.findOneByCode('D')).thenReturn(productDTOMock);
+        when(productsRepositoryMock.findOneByCode('A')).thenReturn(getProductDTOA());
+        when(productsRepositoryMock.findOneByCode('B')).thenReturn(getProductDTOB());
+        when(productsRepositoryMock.findOneByCode('C')).thenReturn(getProductDTOC());
+        when(productsRepositoryMock.findOneByCode('D')).thenReturn(getProductDTOD());
 
         Assertions.assertEquals(7, productsDefiner.defineProductsListFrom("AAABACD").size());
         verify(productsRepositoryMock, times(7)).findOneByCode(anyChar());
@@ -53,7 +67,7 @@ class ProductsDefinerTest {
 
     @Test
     void testDefineProductListFromCartWithNotProductsCharactersInCart() {
-        when(productsRepositoryMock.findOneByCode('A')).thenReturn(productDTOMock);
+        when(productsRepositoryMock.findOneByCode('A')).thenReturn(getProductDTOA());
 
         Assertions.assertEquals(1, productsDefiner.defineProductsListFrom("   __ 324 A W").size());
         verify(productsRepositoryMock, times(13)).findOneByCode(anyChar());
